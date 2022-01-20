@@ -1,0 +1,62 @@
+.item{
+    display: flex;
+    justify-content: space-between;
+    margin: 10px 0px;
+    width: 100%;
+    flex-direction:column-reverse;
+}
+
+.item-inserido{
+    display: flex;
+    justify-content: space-between;
+}
+
+.titulo-item{
+    display: inline-block;
+    width: 40%;
+}
+
+.item--img{
+    width: 70px;
+}
+
+.icone-editar{
+    display: inline-block;
+    font-size: 18px;
+    background-color: green;
+    color: #fff;
+    height: 30px;
+    width: 40px;
+    border-radius: 5px;
+    text-align: center;
+    border: none;
+}
+
+.icone-excluir{
+    display: inline-block;
+    font-size: 18px;
+    background-color: red;
+    color: #fff;
+    height: 30px;
+    width: 40px;
+    border-radius: 5px;
+    text-align: center;
+    border: none;
+}
+
+#botao_salvar, #botao_cancelar{
+    display: none;
+}
+
+#deleteButton{
+    border: none;
+    background-color: none;
+    display: none;
+}
+
+.dados{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 40%;
+}
