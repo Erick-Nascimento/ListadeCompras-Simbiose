@@ -1,13 +1,7 @@
 let produtos = [];
-
-let pessoas = [
-    {
-    nome: '',
-    email: ''
-}
-];
-
-let i = 1; /*Variável atrelada ao Array de Pessoas*/
+let pessoas = [{}];
+pessoas.shift();
+pegaDados();
 let x = 0; /*Variável atrelada a função inserir*/
 let botao_inserir = document.getElementById('botao_inserir');
 let botao_salvar = document.getElementById('botao_salvar');
@@ -17,17 +11,12 @@ let meu_campo = document.getElementById('meu_campo').value;
 /*Consumindo a API*/
 function pegaDados(){
 
-    let nome = '';
-    let email = '';
-
     fetch('https://randomuser.me/api/', {})
     .then((response) => {
         return response.json(); 
     }).then((data) => {
-        let nome2 = data.results[0].name.first + ' ' + data.results[0].name.last;
-        let email2 = data.results[0].email;
-        nome = nome2;
-        email = email2;
+        let nome = data.results[0].name.first + ' ' + data.results[0].name.last;
+        let email = data.results[0].email;
         console.log(nome)
         console.log(email)
 
@@ -35,6 +24,7 @@ function pegaDados(){
         meu_email = email;
 
         pessoas.push({email, nome});
+        console.log(pessoas)
 
     }).catch((err) => {
         console.log('Deu ruim aqui', err);
@@ -44,26 +34,7 @@ function pegaDados(){
 }
 
 function inserir(){
-    console.log('valor de i: ', i);
-    console.log(pessoas)
     pegaDados();
-    /*Aqui consumo a API*/
-    let nome = '';
-    let email = '';
-
-    fetch('https://randomuser.me/api/', {})
-    .then((response) => {
-        return response.json(); 
-    }).then((data) => {
-        let nome2 = data.results[0].name.first + ' ' + data.results[0].name.last;
-        let email2 = data.results[0].email;
-        nome = nome2;
-        email = email2;
-    }).catch((err) => {
-        console.log('Deu ruim aqui', err);
-    });
-    /*Aqui consumo a API*/
-
     /*Habilita o botão de deletar todos os itens quando o primeiro item é inserido*/
     let deleteButton =  document.getElementById('deleteButton');
     deleteButton.style.display = 'inline-block';
@@ -81,18 +52,15 @@ function inserir(){
         produtos.push(produto);
         console.log(produtos);
 
-        
-
         /*Insere o produto no HTML*/
         let item = document.getElementById('item');
 
-        
         item.innerHTML += `
             <div class="item-inserido" id="item-inserido">
                 <p class="titulo-item" id="tituloitem">${produtos[x]}</p>
                 <div class="dados id="dados">
-                    <p class="nome" id="nome">${pessoas[i].nome}</p>
-                    <p class="email" id="email">${pessoas[i].email}</p>
+                    <p class="nome" id="nome">${pessoas[x].nome}</p>
+                    <p class="email" id="email">${pessoas[x].email}</p>
                 </div>
                 <div class="botoes">
                     <button class="icone-editar" onclick="editar('${produtos[x]}');">
@@ -106,7 +74,6 @@ function inserir(){
         `;
         document.getElementById("produto").value = '';
         x++;
-        i++;
     }
 }
 
@@ -120,25 +87,24 @@ function excluir(nome_produto){
     console.log('Excluiu ', nome_produto);
     console.log(produtos);
     console.log(indice);
+    console.log(pessoas)
 
     /*Exclui do array de pessoas a pessoa pelo indice*/
-    let indice2 = indice + 1;
-    pessoas.splice(indice2, 1);
+    pessoas.splice(indice, 1);
 
     /*Limpa a lista do HTML*/
     let item = document.getElementById('item');
     item.innerHTML = '';
     x = 0;
     /*Imprime novamente todos os itens do array*/
-    i=1;
     while(x < produtos.length){
     
     item.innerHTML += `
         <div class="item-inserido" id="item-inserido">
             <p class="titulo-item" id="tituloitem">${produtos[x]}</p>
             <div class="dados id="dados">
-                    <p class="nome" id="nome">${pessoas[i].nome}</p>
-                    <p class="email" id="email">${pessoas[i].email}</p>
+                    <p class="nome" id="nome">${pessoas[x].nome}</p>
+                    <p class="email" id="email">${pessoas[x].email}</p>
                 </div>
             <div class="botoes">
                 <button class="icone-editar" onclick="editar('${produtos[x]}');">
@@ -151,7 +117,6 @@ function excluir(nome_produto){
         </div>
     `;
     x++;
-    i++;
 
     }
     
@@ -242,18 +207,13 @@ function salvar(){
 }
 
 function deleteAll(){
-    for (x=0; x = produtos.length; x++){
-        produtos.pop(x);
-    }
-    console.log('Excluiu tudo');
+    produtos = [];
 
     /*Limpando o Array de Pessoas*/
-    for (n=0; n < pessoas.length; n++){
-        /*pessoas.pop(n);*/
-        pessoas.splice(1, n); /* Exlui o indice 1 n vezes */
-        i = 1;
+    pessoas.splice(0, pessoas.length);
 
-    }
+    pegaDados();
+    x=0;
 
     /*Limpa a Lista*/
     let item = document.getElementById('item');
